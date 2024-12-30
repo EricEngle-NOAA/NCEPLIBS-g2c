@@ -18,6 +18,8 @@ main()
     printf("Testing g2c_inq()/g2c_inq_msg()/g2c_inq_prod() calls...\n");
     {
         int op;
+        size_t dimlen;
+        char dimname[G2C_MAX_NAME];
 
         for (op = 0; op < NUM_OPEN; op++)
         {
@@ -68,6 +70,9 @@ main()
                 return G2C_ERROR;
 
             /* This won't work - bad msg number. */
+            if (g2c_inq_msg(g2cid, -1, NULL, NULL, NULL, NULL, NULL, NULL, NULL) != G2C_EINVAL)
+                return G2C_ERROR;
+            /* This won't work - msg number won't be found. */
             if (g2c_inq_msg(g2cid, NUM_MSG, NULL, NULL, NULL, NULL, NULL, NULL, NULL) != G2C_ENOMSG)
                 return G2C_ERROR;
 
@@ -84,16 +89,34 @@ main()
                 return G2C_ERROR;
 
             /* This won't work - bad msg number. */
+            if (g2c_inq_prod(g2cid, -1, 0, NULL, NULL, NULL, NULL, NULL, NULL) != G2C_EINVAL)
+                return G2C_ERROR;
             if (g2c_inq_prod(g2cid, NUM_MSG, 0, NULL, NULL, NULL, NULL, NULL, NULL) != G2C_ENOMSG)
                 return G2C_ERROR;
 
-            /* This won't work - bad prod number. */
+            /* These won't work - bad prod number. */
             if (g2c_inq_prod(g2cid, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL) != G2C_ENOPRODUCT)
+                return G2C_ERROR;
+            if (g2c_inq_prod(g2cid, 0, -1, NULL, NULL, NULL, NULL, NULL, NULL) != G2C_EINVAL)
                 return G2C_ERROR;
 
             /* This works but does nothing. */
             if ((ret = g2c_inq_prod(g2cid, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL)))
                 return ret;
+
+            /* Won't work, bad IDs. */
+            if ((ret = g2c_inq_dim(-1, 0, 0, 0, &dimlen, dimname, NULL)) != G2C_EBADID)
+                return G2C_ERROR;
+            if ((ret = g2c_inq_dim(G2C_MAX_FILES + 1, 0, 0, 0, &dimlen, dimname, NULL)) != G2C_EBADID)
+                return G2C_ERROR;
+            if ((ret = g2c_inq_dim(10, 0, 0, 0, &dimlen, dimname, NULL)) != G2C_EBADID)
+                return G2C_ERROR;
+            if ((ret = g2c_inq_dim(g2cid, -1, 0, 0, &dimlen, dimname, NULL)) != G2C_EINVAL)
+                return G2C_ERROR;
+            if ((ret = g2c_inq_dim(g2cid, 0, -1, 0, &dimlen, dimname, NULL)) != G2C_EINVAL)
+                return G2C_ERROR;
+            if ((ret = g2c_inq_dim(g2cid, 0, 0, -1, &dimlen, dimname, NULL)) != G2C_EINVAL)
+                return G2C_ERROR;
 
             /* Check each message. */
             for (m = 0; m < num_msg; m++)
@@ -150,8 +173,6 @@ main()
                 short year;
                 short center, subcenter;
                 unsigned char master_version, local_version;
-                size_t dimlen;
-                char dimname[G2C_MAX_NAME];
                 int p;
 
                 printf("\t\tinquiring about message %d...\n", m);
@@ -166,6 +187,27 @@ main()
                 /* Check results. */
                 if (num_local || num_fields != 1 || discipline != (m < 4 ? 0 : 10))
                     return G2C_ERROR;
+
+                /* These will all fail due to bad inputs. */
+                if ((ret = g2c_inq_msg_time(-1, m, &sig_ref_time, &year, &month, &day, &hour,
+                                            &minute, &second)) != G2C_EBADID)
+                    return G2C_ERROR;
+                if ((ret = g2c_inq_msg_time(10, m, &sig_ref_time, &year, &month, &day, &hour,
+                                            &minute, &second)) != G2C_EBADID)
+                    return G2C_ERROR;
+                if ((ret = g2c_inq_msg_time(G2C_MAX_FILES + 1, m, &sig_ref_time, &year, &month, &day, &hour,
+                                            &minute, &second)) != G2C_EBADID)
+                    return G2C_ERROR;
+                if ((ret = g2c_inq_msg_time(g2cid, -1, &sig_ref_time, &year, &month, &day, &hour,
+                                            &minute, &second)) != G2C_EINVAL)
+                    return G2C_ERROR;
+                if ((ret = g2c_inq_msg_time(g2cid, 20, &sig_ref_time, &year, &month, &day, &hour,
+                                            &minute, &second)) != G2C_ENOMSG)
+                    return G2C_ERROR;
+
+                /* This will work, but do nothing. */
+                if ((ret = g2c_inq_msg_time(g2cid, m, NULL, NULL, NULL, NULL, NULL, NULL, NULL)))
+                    return ret;
 
                 /* Inquire about the date/time. */
                 if ((ret = g2c_inq_msg_time(g2cid, m, &sig_ref_time, &year, &month, &day, &hour,
@@ -205,6 +247,11 @@ main()
                         return G2C_ERROR;
                 }
 
+                if ((ret = g2c_inq_dim_info(g2cid, m, 0, 0, &dimlen, dimname)))
+                    return ret;
+                /* printf("dimlen = %ld, dimname = %s\n", dimlen, dimname); */
+                if (dimlen != 151 || strcmp(dimname, "Latitude"))
+                    return G2C_ERROR;
                 if ((ret = g2c_inq_dim(g2cid, m, 0, 0, &dimlen, dimname, NULL)))
                     return ret;
                 /* printf("dimlen = %ld, dimname = %s\n", dimlen, dimname); */
