@@ -289,7 +289,7 @@ g2int g2_gribend(unsigned char *cgrib);
 #define G2C_SECTION1_LEN 13 /**< Length of section 1 array. */
 
 /* Constants to help with templates. */
-#define G2C_MAX_GDS_TEMPLATE 31        /**< Maximum number of grid templates. */
+#define G2C_MAX_GDS_TEMPLATE 38        /**< Maximum number of grid templates. */
 #define G2C_MAX_GDS_TEMPLATE_MAPLEN 28 /**< Maximum grid template map length. */
 #define G2C_MAX_PDS_TEMPLATE 102        /**< Maximum number of PDS templates. */
 #define G2C_MAX_PDS_TEMPLATE_MAPLEN 50 /**< Maximum template map length. */
