@@ -30,6 +30,7 @@
  * 2009-01-14 | Vuong | Changed structure name template to gtemplate
  * 2022-10-18 | Hartnett | Added g2c_get_drs_template().
  * 2023-09-08 | Engle | Added template 5.42.
+ * 2025-01-06 | Stahl | Added template 5.53
  *
  * @author Stephen Gilbert @date 2001-06-28
  */
@@ -105,6 +106,10 @@ static const struct drstemplate templatesdrs[G2C_MAX_DRS_TEMPLATE] =
         /** [5.42: Grid point data - CCSDS recommended lossless compress (libaec)
      * encoding](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-42.shtml) */
         {42, 8, 0, {4, -2, -2, 1, 1, 1, 1, 2}},
+
+        /** [5.53: Spectral data for limited area models - Complex packing
+     * encoding](https://www.nco.ncep.noaa.gov/pmb/docs/grib2/grib2_doc/grib2_temp5-53.shtml) */
+        {53, 11, 0, {4, -2, -2, 1, 1, 1, -4, 2, 2, 4, 1}},
 
         /** 5.40000: Grid point data - JPEG2000 encoding
      *

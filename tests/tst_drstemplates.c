@@ -82,9 +82,9 @@ main()
     printf("ok!\n");
     printf("Testing all getdrstemplate() calls...\n");
     {
-#define NUM_TEST 9
-        int number[NUM_TEST] = {0, 2, 3, 50, 51, 40, 41, 40000, 40010};
-        int expected_maplen[NUM_TEST] = {5, 16, 18, 5, 10, 7, 5, 7, 5};
+#define NUM_TEST 10
+        int number[NUM_TEST] = {0, 2, 3, 50, 51, 40, 41, 40000, 40010, 53};
+        int expected_maplen[NUM_TEST] = {5, 16, 18, 5, 10, 7, 5, 7, 5, 11};
         int expected_map[NUM_TEST][18] = {
             {4, -2, -2, 1, 1},                                        /* 0 */
             {4, -2, -2, 1, 1, 1, 1, 4, 4, 4, 1, 1, 4, 1, 4, 1},       /* 2 */
@@ -94,7 +94,8 @@ main()
             {4, -2, -2, 1, 1, 1, 1},                                  /* 40 */
             {4, -2, -2, 1, 1},                                        /* 41 */
             {4, -2, -2, 1, 1, 1, 1},                                  /* 40000 */
-            {4, -2, -2, 1, 1}                                         /* 40010 */
+            {4, -2, -2, 1, 1},                                        /* 40010 */
+            {4, -2, -2, 1, 1, 1, -4, 2, 2, 4, 1},                     /* 53*/
         };
 
         int t;
