@@ -27,6 +27,8 @@
 
 #include "grib2.h"
 
+#define IS_ARM_LINUX __aarch64__ && __linux__
+
 #define ALOG2 (0.69314718) /**< ln(2.0) */
 
 /** Name of JPEG codec in Jasper. */
