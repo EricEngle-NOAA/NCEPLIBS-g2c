@@ -65,12 +65,12 @@ g2c_file_io(FILE *f, int write, int g2ctype, void *var)
         if (write)
         {
             /* Are we writing a negative number? */
-            if (g2ctype == G2C_BYTE && *bvar < 0)
-            {
-                byte_tmp = -1 * *bvar;         /* Store as positive. */
-                byte_tmp |= 1UL << BITSHIFT_7; /* Set sign bit. */
-            }
-            else
+            //if (g2ctype == G2C_BYTE && *bvar < 0)
+            //{
+            //    byte_tmp = -1 * *bvar;         /* Store as positive. */
+            //    byte_tmp |= 1UL << BITSHIFT_7; /* Set sign bit. */
+            //}
+            //else
                 byte_tmp = *bvar;
 
             /* Convert result to big-endian. */
