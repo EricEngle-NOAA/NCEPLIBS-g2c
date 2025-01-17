@@ -71,7 +71,7 @@ g2c_file_io(FILE *f, int write, int g2ctype, void *var)
             //    byte_tmp |= 1UL << BITSHIFT_7; /* Set sign bit. */
             //}
             //else
-                byte_tmp = *bvar;
+            byte_tmp = *bvar;
 
             /* Convert result to big-endian. */
             byte_be = byte_tmp;
