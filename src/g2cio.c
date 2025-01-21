@@ -159,14 +159,14 @@ g2c_file_io(FILE *f, int write, int g2ctype, void *var)
             /* No conversion needed for one-byte values. */
             *bvar = byte_be;
 
-#ifndef IS_ARM_LINUX
+//#ifndef IS_ARM_LINUX
             /* Did we read a negative number? Check the sign bit... */
-            if (g2ctype == G2C_BYTE && *bvar & 1 << BITSHIFT_7)
-            {
-                *bvar &= ~(1UL << BITSHIFT_7); /* Clear sign bit. */
-                *bvar *= -1;                   /* Make it negative. */
-            }
-#endif
+            //if (g2ctype == G2C_BYTE && *bvar & 1 << BITSHIFT_7)
+            //{
+            //    *bvar &= ~(1UL << BITSHIFT_7); /* Clear sign bit. */
+            //    *bvar *= -1;                   /* Make it negative. */
+            //}
+//#endif
             break;
         case G2C_SHORT:
         case G2C_USHORT:
