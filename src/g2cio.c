@@ -64,15 +64,7 @@ g2c_file_io(FILE *f, int write, int g2ctype, void *var)
         void_be = &byte_be;
         if (write)
         {
-            /* Are we writing a negative number? */
-            //if (g2ctype == G2C_BYTE && *bvar < 0)
-            //{
-            //    byte_tmp = -1 * *bvar;         /* Store as positive. */
-            //    byte_tmp |= 1UL << BITSHIFT_7; /* Set sign bit. */
-            //}
-            //else
             byte_tmp = *bvar;
-
             /* Convert result to big-endian. */
             byte_be = byte_tmp;
         }
@@ -158,15 +150,6 @@ g2c_file_io(FILE *f, int write, int g2ctype, void *var)
         case G2C_UBYTE:
             /* No conversion needed for one-byte values. */
             *bvar = byte_be;
-
-//#ifndef IS_ARM_LINUX
-            /* Did we read a negative number? Check the sign bit... */
-            //if (g2ctype == G2C_BYTE && *bvar & 1 << BITSHIFT_7)
-            //{
-            //    *bvar &= ~(1UL << BITSHIFT_7); /* Clear sign bit. */
-            //    *bvar *= -1;                   /* Make it negative. */
-            //}
-//#endif
             break;
         case G2C_SHORT:
         case G2C_USHORT:
